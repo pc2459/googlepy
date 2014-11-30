@@ -39,15 +39,23 @@ print_words() and print_top().
 
 import sys
 
+# create a dictionary to store words
 words = {}
 
+#########
+
 def open_and_count(filename):
+  """Opens and reads words and their counts into a dictionary"""
+
   # open the file
   f = open(filename,'r')
 
   # iterate through each line
   for line in f:
+    # split words on whitespace
     allthings = line.split()
+
+    # add words to the dictionary
     for word in allthings:
       if word.lower() not in words:
         words[word.lower()] = 1
@@ -56,20 +64,33 @@ def open_and_count(filename):
 
   f.close()
 
+#########
+
+def get_count(dictionary):
+  """Helper function to grab the count from a word/count dictionary tuple"""
+  return dictionary[1]
+
+#########
+
 def print_words(filename):
+  """Prints all the words and their counts from a file"""
   open_and_count(filename)
   for word in sorted(words.keys()):
     print word, words[word]
 
+#########
+
 def print_top(filename):
-  pass
+  """Prints the top twenty words and their counts from a file"""
 
+  # open and build the wordcount dictionary
+  open_and_count(filename)
+  
+  # sort the tuples list of the dictionary by the second item in the tuple pair (the count) 
+  toplist = sorted(words.items(), key=get_count, reverse=True)
 
-
-# Define print_words(filename) and print_top(filename) functions.
-# You could write a helper utility function that reads a file
-# and builds and returns a word/count dict for it.
-# Then print_words() and print_top() can just call the utility function.
+  for word, count in toplist[:20]:
+    print word, count
 
 ###
 
