@@ -41,8 +41,7 @@ def extract_names(filename):
   ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
   """
 
-  # create the list
-
+  # create the list and dictionary
   babynames = []
   ranking = {}
 
@@ -77,12 +76,9 @@ def extract_names(filename):
     ranking[male] = rank.group()
     ranking[female] = rank.group()
 
-
-
-  print babynames
-  
+  # append them to a list
   for name in sorted(ranking.keys()):
-    print name, ranking[name]
+    babynames.append(name + ' ' + ranking[name])
 
   return babynames
 
@@ -103,11 +99,29 @@ def main():
     summary = True
     del args[0]
 
-  # +++your code here+++
+
   # For each filename, get the names, then either print the text output
   # or write it to a summary file
   for arg in args:
-    extract_names(arg)
+
+    # extract the delicious data 
+    babynames = extract_names(arg)
+    text = '\n'.join(babynames) + '\n' 
+
+    # if user requests a summary
+    if summary == True:
+      
+      # create an output file and write the summary to it
+      output = open('summary'+arg,'w')
+
+      for line in text:
+        output.write(line)
+      
+      output.close()
+
+    # otherwise, print summary to screen
+    else:
+      print text
   
 if __name__ == '__main__':
   main()
